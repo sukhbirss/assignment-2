@@ -8,6 +8,7 @@
 	z-index: 2;
 	padding-top: 20px;
 	position: relative;
+	animation: createBox 0.3s;
 }
 
 .container >p{
@@ -45,4 +46,14 @@
 		width: 80vw;
 	}
 
+}
+
+
+@keyframes createBox {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
 }

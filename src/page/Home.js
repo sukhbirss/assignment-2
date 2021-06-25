@@ -11,12 +11,12 @@ function Home() {
 	const [image, setImage] = useState(false);
 	const [show, setShow] = useState(false)
 	const [trigger, setTrigger] = useState(false)
-
+	const [page, setPage] = useState(1)
 	//this will fetch default pics
 	useEffect(() => {
 		    axios.get('https://www.flickr.com/services/rest/?method=flickr.photos.getRecent&api_key=3ec9ec9a2955f1c26c23353f07319320&per_page=21&page=10&format=json&nojsoncallback=1')
         .then(response => {
-	                    setData(response.data.photos)
+	                    setData(response.data.photos.photo)
               })
 	}, [])
 
@@ -27,9 +27,9 @@ function Home() {
 		useEffect(() => {
 			if(search){
 			    const delayDebounceFn = setTimeout(() => {
-			      	axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=3ec9ec9a2955f1c26c23353f07319320&text=${search}&format=json&nojsoncallback=1`)
+			      	axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=3ec9ec9a2955f1c26c23353f07319320&text=${search}&page=${page}&per_page=21&format=json&nojsoncallback=1`)
 					        .then(response => {
-						                    setData(response.data.photos)
+						                    setData(response.data.photos.photo)
 					              })
 					let previousSearch = JSON.parse(localStorage.getItem("previousSearch"))
 						if(previousSearch && !previousSearch.includes(search)){
@@ -44,24 +44,41 @@ function Home() {
 			}
   	}, [search]);
 
+	const handleScroll = (e) =>{
+			if(e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight){
+				axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=3ec9ec9a2955f1c26c23353f07319320&text=${search}&page=${page+1}&per_page=21&format=json&nojsoncallback=1`)
+					        .then(response => {
+
+					        				let update =[...data,...response.data.photos.photo];
+					        				console.log(update)
+					        				setData(update)
+
+
+					          })
+			}
+
+
+	}
+
 
   return (
   	<>
     	<div className={style.header} >
 	    	<h1> Search Photos </h1>
 	    	<div>
-		    	<input value={search} onChange={(e)=>{setSearch(e.target.value);}} className={style.search} onClick={() =>setTrigger(true)}/>
+		    	<input placeholder="search somthing like Goku" value={search} onChange={(e)=>{setSearch(e.target.value);}} className={style.search} onClick={() =>setTrigger(true)}/>
+    				{data && <h6 style={{color:"white"}}>got {data.length} pics from api</h6>}
 
 		    	{trigger && <Suggestions  setSearch={setSearch}/>}
 	    	</div>
 	    </div>
 
 
-    	<div className={style.image_container} onClick={() =>setTrigger(false)} >
-    		{
-    			data?.photo ? 
+    	<div className={style.image_container} onClick={() =>setTrigger(false)} onScroll={handleScroll}>
 
-    				data.photo.map((el) => {
+    		{
+    			data ?
+    				data.map((el) => {
     					return (
     						<div className={style.image} onClick={()=>{setImage(`http://farm${el.farm}.staticflickr.com/${el.server}/${el.id}_${el.secret}.jpg`); setShow(true)}}>
     							<img src={`http://farm${el.farm}.staticflickr.com/${el.server}/${el.id}_${el.secret}.jpg`} onClick={()=>{setImage(`http://farm${el.farm}.staticflickr.com/${el.server}/${el.id}_${el.secret}.jpg`); setShow(true)}} />
