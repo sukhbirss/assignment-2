@@ -18,17 +18,7 @@ function Home() {
               })
 	}, [])
 
-	const func = (e) =>{
-		e.preventDefault()
-		console.log(search)
-		
-		axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=3ec9ec9a2955f1c26c23353f07319320&text=${search}&format=json&nojsoncallback=1`)
-					        .then(response => {
-						                    setData(response.data.photos)
-					              })
 
-		 
-	}
 
 
 		useEffect(() => {
@@ -49,7 +39,7 @@ function Home() {
 						}
 
 
-			    }, 500);
+			    }, 200);
 
 			    return () => clearTimeout(delayDebounceFn);
 
@@ -59,25 +49,11 @@ function Home() {
   	}, [search]);
 
 
-
-		// const handleScroll = e => {
-
-		//     console.log("sukhbir")
-
-		    
-		//     // if (bottom) { console.log("sukhbir") }
-		//   }
-
-
-		//     window.addEventListener('scroll', handleScroll); 
-
   return (
     <div className={style.header} >
     	<h1> Search Photos </h1>
     	<div>
-	    	<form onSubmit={func}>
 	    		<input value={search} onChange={(e)=>{setSearch(e.target.value);}} className={style.search}/>
-	    	</form>
 
 	    	<Suggestions  setSearch={setSearch}/>
     	</div>
