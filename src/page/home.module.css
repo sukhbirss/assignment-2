@@ -1,16 +1,16 @@
 .header{
 	width: 100vw;
-	height:200px;
+	height:120px;
 	background-color: black;
 	display: flex;
 	align-items: center;
 	flex-direction: column;
-
+	z-index: 10;
+	padding-top: 20px;
 }
 
 .header > h1{
 	color: white;
-	padding-top: 100px;
 	margin-bottom: 10px;
 
 }
@@ -25,11 +25,14 @@
 
 
 .image_container{
-	padding-top: 20px;
+	padding-top:20px;
+	width: 100vw;
+	height: Calc(100vh - 170px);
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-around;
 	align-items: center;
+	overflow-y: scroll;
 }
 
 .image  {
