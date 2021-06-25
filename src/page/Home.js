@@ -10,7 +10,7 @@ function Home() {
 	const [data, setData] = useState(null);
 	const [image, setImage] = useState(false);
 	const [show, setShow] = useState(false)
-
+	const [trigger, setTrigger] = useState(false)
 	useEffect(() => {
 		    axios.get('https://www.flickr.com/services/rest/?method=flickr.photos.getRecent&api_key=3ec9ec9a2955f1c26c23353f07319320&per_page=21&page=10&format=json&nojsoncallback=1')
         .then(response => {
@@ -39,7 +39,7 @@ function Home() {
 						}
 
 
-			    }, 200);
+			    }, 500);
 
 			    return () => clearTimeout(delayDebounceFn);
 
@@ -53,12 +53,12 @@ function Home() {
     <div className={style.header} >
     	<h1> Search Photos </h1>
     	<div>
-	    		<input value={search} onChange={(e)=>{setSearch(e.target.value);}} className={style.search}/>
+	    	<input value={search} onChange={(e)=>{setSearch(e.target.value);}} className={style.search} onClick={() =>setTrigger(true)}/>
 
-	    	<Suggestions  setSearch={setSearch}/>
+	    	{trigger && <Suggestions  setSearch={setSearch}/>}
     	</div>
 
-    	<div className={style.image_container} >
+    	<div className={style.image_container}  onClick={() =>setTrigger(false)}>
     		{
     			data?.photo ? 
 

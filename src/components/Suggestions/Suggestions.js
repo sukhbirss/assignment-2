@@ -7,7 +7,11 @@ function Suggestions(props) {
 		localStorage.removeItem('previousSearch')
 
 	}
-
+	useEffect(() => {
+		
+		   setPrevSerach(JSON.parse(localStorage.getItem('previousSearch')))
+	   
+	}, [JSON.parse(localStorage.getItem("previousSearch"))])
 	
   return (
   	<>
