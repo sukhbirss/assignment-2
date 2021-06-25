@@ -1,0 +1,17 @@
+.container{
+	width: 90vw;
+	height: 90vh;
+	background-color: #e2e2e2;
+	z-index: 10;
+	position: fixed;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 5vh 5vw 10vh 5vw;
+}
+
+.image{
+	width: 100vw;
+	border-radius: 5px;
+	z-index: 12;
+}
